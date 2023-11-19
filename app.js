@@ -6,7 +6,7 @@ const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user.model");
-const CarDataAdmin = require("./models/addacar.model");
+const CarDataAdmin = require("./models/addacars.model");
 const SellmyCarData = require("./models/sellmycars.model");
 const multer = require('multer');
 const morgan = require('morgan');
@@ -27,8 +27,10 @@ const getAllUser = require("./router/getAllUser");
 const profileData = require("./router/profileData");
 const CarDataFormAdmins = require("./router/Admin/CarDataFormAdmins");
 const CarDataFormClient = require("./router/Admin/CarDataFormClient");
+const SellMyCar = require("./router/sellmycar");
 const Register = require("./router/Register");
 const Login = require("./router/Login");
+const AddACar = require("./router/AddACar"); 
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -221,127 +223,130 @@ app.post('/userData', async (req, res) => {
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 // ADD A CAR FOR ADMIN PANELL
-app.post('/api/addacar', async (req, res) => {
-  const {
-    name,
-    model,
-    year,
-    color,
-    bodytype,
-    mileages,
-    condition,
-    vin,
-    stocknumber,
-    fueltype,
-    gasmileages,
-    fueltanksize,
-    transmission,
-    Engine,
-    Horsepower,
-    Doors,
-    picture,
-    gallery,
-    Brand,
-    price } = req.body;
 
-  try {
-    const CarDataforAdmin = new CarDataAdmin({
-      name,
-      model,
-      year,
-      color,
-      bodytype,
-      mileages,
-      condition,
-      vin,
-      stocknumber,
-      fueltype,
-      gasmileages,
-      fueltanksize,
-      transmission,
-      Engine,
-      Horsepower,
-      Doors,
-      Brand,
-      picture,
-      gallery,
-      price
-    });
-    await CarDataforAdmin.save();
-    res.status(201).json(CarDataforAdmin);
+app.use(AddACar);
+// app.post('/api/addacar', async (req, res) => {
+//   const {
+//     name,
+//     model,
+//     year,
+//     color,
+//     bodytype,
+//     mileages,
+//     condition,
+//     vin,
+//     stocknumber,
+//     fueltype,
+//     gasmileages,
+//     fueltanksize,
+//     transmission,
+//     Engine,
+//     Horsepower,
+//     Doors,
+//     picture,
+//     gallery,
+//     Brand,
+//     price } = req.body;
 
-  } catch (error) {
-    console.error('Error adding car:', error);
-    // Return a 400 Bad Request status with an error message
-    res.status(400).json({
-      message: 'Invalid JSON data in the request',
-      error: error.message, // Include the error message in the response
-    });
-  }
-});
+//   try {
+//     const CarDataforAdmin = new CarDataAdmin({
+//       name,
+//       model,
+//       year,
+//       color,
+//       bodytype,
+//       mileages,
+//       condition,
+//       vin,
+//       stocknumber,
+//       fueltype,
+//       gasmileages,
+//       fueltanksize,
+//       transmission,
+//       Engine,
+//       Horsepower,
+//       Doors,
+//       Brand,
+//       picture,
+//       gallery,
+//       price
+//     });
+//     await CarDataforAdmin.save();
+//     res.status(201).json(CarDataforAdmin);
+
+//   } catch (error) {
+//     console.error('Error adding car:', error);
+//     // Return a 400 Bad Request status with an error message
+//     res.status(400).json({
+//       message: 'Invalid JSON data in the request',
+//       error: error.message, // Include the error message in the response
+//     });
+//   }
+// });
 
 
 
+app.use(SellMyCar);
 
-app.post('/api/sellmycar', async (req, res) => {
-  const {
-    name,
-    model,
-    year,
-    color,
-    bodytype,
-    mileages,
-    condition,
-    vin,
-    stocknumber,
-    fueltype,
-    gasmileages,
-    fueltanksize,
-    transmission,
-    Engine,
-    Horsepower,
-    Doors,
-    picture,
-    gallery,
-    Brand,
-    price } = req.body;
+// app.post('/api/sellmycar', async (req, res) => {
+//   const {
+//     name,
+//     model,
+//     year,
+//     color,
+//     bodytype,
+//     mileages,
+//     condition,
+//     vin,
+//     stocknumber,
+//     fueltype,
+//     gasmileages,
+//     fueltanksize,
+//     transmission,
+//     Engine,
+//     Horsepower,
+//     Doors,
+//     picture,
+//     gallery,
+//     Brand,
+//     price } = req.body;
 
-  try {
-    const carData = new SellmyCarData({
-      name,
-      model,
-      year,
-      color,
-      bodytype,
-      mileages,
-      condition,
-      vin,
-      stocknumber,
-      fueltype,
-      gasmileages,
-      fueltanksize,
-      transmission,
-      Engine,
-      Horsepower,
-      Doors,
-      picture,
-      gallery,
-      Brand,
-      price
-    });
-    await carData.save();
-    res.status(201).json(carData);
+//   try {
+//     const carData = new SellmyCarData({
+//       name,
+//       model,
+//       year,
+//       color,
+//       bodytype,
+//       mileages,
+//       condition,
+//       vin,
+//       stocknumber,
+//       fueltype,
+//       gasmileages,
+//       fueltanksize,
+//       transmission,
+//       Engine,
+//       Horsepower,
+//       Doors,
+//       picture,
+//       gallery,
+//       Brand,
+//       price
+//     });
+//     await carData.save();
+//     res.status(201).json(carData);
 
-    // res.status(201).json({ message: 'Car added successfully' });
-  } catch (error) {
-    console.error('Error adding car:', error);
-    // Return a 400 Bad Request status with an error message
-    res.status(400).json({
-      message: 'Invalid JSON data in the request',
-      error: error.message, // Include the error message in the response
-    });
-  }
-});
+//     // res.status(201).json({ message: 'Car added successfully' });
+//   } catch (error) {
+//     console.error('Error adding car:', error);
+//     // Return a 400 Bad Request status with an error message
+//     res.status(400).json({
+//       message: 'Invalid JSON data in the request',
+//       error: error.message, // Include the error message in the response
+//     });
+//   }
+// });
 
 // Coneected MongoDB
 

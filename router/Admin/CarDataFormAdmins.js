@@ -1,4 +1,4 @@
-const CarDataAdmin = require('../../models/addacar.model');
+const CarDataAdmin = require('../../models/addacars.model');
 const express = require('express');
 const CarDataFormAdmins = express.Router();
 

@@ -8,6 +8,8 @@ const mongoose = require("mongoose");
 const User = require("./models/user.model");
 const CarDataAdmin = require("./models/addacars.model");
 const SellmyCarData = require("./models/sellmycars.model");
+
+
 const multer = require('multer');
 const morgan = require('morgan');
 const xssClean = require('xss-clean');
@@ -31,6 +33,8 @@ const SellMyCar = require("./router/sellmycar");
 const Register = require("./router/Register");
 const Login = require("./router/Login");
 const AddACar = require("./router/AddACar"); 
+const GETCALLDATALISTING = require("./router/GetCallDataListing");
+const GetCallDataListing = require("./router/GetCallDataListing");
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -285,6 +289,7 @@ app.use(AddACar);
 // });
 
 
+// add car for every client
 
 app.use(SellMyCar);
 
@@ -348,7 +353,44 @@ app.use(SellMyCar);
 //   }
 // });
 
+
+// API for GET all data from carlisting 
+app.use(GetCallDataListing);
+
+// app.get("/api/getcalldatalisting", async (req, res) => {
+//   try{
+//       const GetAllCarData = await SellmyCarData.find({});
+//       res.send({ status : "OK" , data : GetAllCarData});
+//       console.log("ALL IS WELL");
+//       res.json(GetAllCarData);
+
+//   }catch (error) {
+//       console.log("This error comeing from GETCALLDATALISTING and it is :" + error);
+//   }
+// } );
+
 // Coneected MongoDB
+
+
+app.get('/api/getcalldatalisting/:carId', async (req, res) => {
+  const carId = req.params.carId;
+  try {
+    const carProfile = await SellmyCarData.findById(carId);
+    if (!carProfile) {
+      return res.status(404).json({ error: 'Car not found' });
+    }
+
+    // Assuming carData is obtained or processed somehow
+    const carData = {}; // Adjust this line based on how you get carData
+
+    // Adjust the response format based on your needs
+    res.json({ data: carData, carProfile });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 mongoose.connect(DBURL, {
   useNewUrlParser: true,

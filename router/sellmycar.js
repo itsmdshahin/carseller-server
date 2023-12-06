@@ -5,7 +5,9 @@ const SellmyCarData = require("../models/sellmycars.model");
 
 
 SellMyCar.post('/api/sellmycar', async (req, res) => {
+    
     const {
+      userId,
       name,
       model,
       year,
@@ -29,6 +31,7 @@ SellMyCar.post('/api/sellmycar', async (req, res) => {
   
     try {
       const carData = new SellmyCarData({
+        userId,
         name,
         model,
         year,
@@ -51,6 +54,7 @@ SellMyCar.post('/api/sellmycar', async (req, res) => {
         price
       });
       await carData.save();
+      console.log("RES : "+req.params.id);
       res.status(201).json(carData);
   
       // res.status(201).json({ message: 'Car added successfully' });

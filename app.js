@@ -35,6 +35,7 @@ const Login = require("./router/Login");
 const AddACar = require("./router/AddACar"); 
 const GETCALLDATALISTING = require("./router/GetCallDataListing");
 const GetCallDataListing = require("./router/GetCallDataListing");
+const CardataPreview = require("./router/CardataPreview");
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -368,36 +369,34 @@ app.use(GetCallDataListing);
 //       console.log("This error comeing from GETCALLDATALISTING and it is :" + error);
 //   }
 // } );
+  
+app.use(CardataPreview);
+
+// app.get('/api/getcalldatalisting/:carId', async (req, res) => {
+//   const carId = req.params.carId;
+//   try {
+//     const carProfile = await SellmyCarData.findById(carId);
+//     if (!carProfile) {
+//       return res.status(404).json({ error: 'Car not found' });
+//     }
+//     // Assuming carData is obtained or processed somehow
+//     const carData = {}; // Adjust this line based on how you get carData
+//     // Adjust the response format based on your needs
+//     res.json({ data: carData, carProfile });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
 
 // Coneected MongoDB
-
-
-app.get('/api/getcalldatalisting/:carId', async (req, res) => {
-  const carId = req.params.carId;
-  try {
-    const carProfile = await SellmyCarData.findById(carId);
-    if (!carProfile) {
-      return res.status(404).json({ error: 'Car not found' });
-    }
-
-    // Assuming carData is obtained or processed somehow
-    const carData = {}; // Adjust this line based on how you get carData
-
-    // Adjust the response format based on your needs
-    res.json({ data: carData, carProfile });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
-
 
 mongoose.connect(DBURL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 })
   .then(() => {
-    console.log("DataBase is CONNECTED! ");
+    console.log("DATABASE IS CONNECTED ! ");
   })
   .catch((error) => {
     // console.log(status);

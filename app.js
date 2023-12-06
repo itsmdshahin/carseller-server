@@ -37,6 +37,7 @@ const GETCALLDATALISTING = require("./router/GetCallDataListing");
 const GetCallDataListing = require("./router/GetCallDataListing");
 const CardataPreview = require("./router/CardataPreview");
 const Cars = require("./router/Brand/Cars");
+const TransictionData = require("./controllers/TransictionData");
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -222,7 +223,8 @@ app.post('/userData', async (req, res) => {
 
 })
 
-
+// add the payment api
+app.use(TransictionData);
 
 
 // Configure multer for file uploads

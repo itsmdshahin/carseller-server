@@ -32,10 +32,11 @@ const CarDataFormClient = require("./router/Admin/CarDataFormClient");
 const SellMyCar = require("./router/sellmycar");
 const Register = require("./router/Register");
 const Login = require("./router/Login");
-const AddACar = require("./router/AddACar"); 
+const addacar = require("./router/addacar"); 
 const GETCALLDATALISTING = require("./router/GetCallDataListing");
 const GetCallDataListing = require("./router/GetCallDataListing");
 const CardataPreview = require("./router/CardataPreview");
+const Cars = require("./router/Brand/Cars");
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -229,7 +230,8 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 // ADD A CAR FOR ADMIN PANELL
 
-app.use(AddACar);
+app.use(addacar);
+// app.use(AddACar);
 // app.post('/api/addacar', async (req, res) => {
 //   const {
 //     name,
@@ -369,7 +371,10 @@ app.use(GetCallDataListing);
 //       console.log("This error comeing from GETCALLDATALISTING and it is :" + error);
 //   }
 // } );
-  
+
+// for band car
+app.use(Cars);
+
 app.use(CardataPreview);
 
 // app.get('/api/getcalldatalisting/:carId', async (req, res) => {

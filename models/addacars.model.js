@@ -53,7 +53,7 @@ const addaCarSchema = new mongoose.Schema({
     type: String,
     // required: true,
   },
-  Engine: {
+  engine: {
     type: String,
     // required: true,
   },

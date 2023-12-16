@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node app.js",
+    "dev": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -22,10 +23,11 @@
     "mongodb": "^5.7.0",
     "mongoose": "^7.4.5",
     "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.7",
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "morgan": "^1.10.0",
-    "nodemon": "^3.0.1"
+    "nodemon": "^3.0.2"
   }
 }

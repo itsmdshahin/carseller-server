@@ -30,17 +30,19 @@ const userSchema = new mongoose.Schema({
     type: String,
     // require: true,
   },
-  age:{
+  age: {
     type: String,
   },
-  status:{
-    type:Boolean,
+  status: {
+    type: Boolean,
   },
+  otp: String, // Store the OTP here
+  isVerified: { type: Boolean, default: false },
   createdOn: {
     type: Date,
     default: Date.now,
   },
 });
- 
+
 
 module.exports = mongoose.model("user", userSchema);

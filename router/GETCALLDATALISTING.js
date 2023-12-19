@@ -13,4 +13,5 @@ GetCallDataListing.get('/api/getcalldatalisting', async (req, res) => {
     }
 });
 
+
 module.exports = GetCallDataListing;

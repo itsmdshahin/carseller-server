@@ -130,7 +130,6 @@ addacar.put('/api/addacar/:id', async (req, res) => {
         if (!updatecars) {
             return res.status(404).json({ error: 'Task not found' });
         }
-
         res.json(updatecars);
         console.log('Updated the Database');
     } catch (error) {

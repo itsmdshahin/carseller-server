@@ -1,8 +1,10 @@
 // match from database authentication
 require("dotenv").config();
+ 
+const Bid = require("./models/BidModel"); // Update the path accordingly
 
 const express = require("express");
-const app = express();
+const app = express(); 
 const cors = require("cors");
 const mongoose = require("mongoose");
 const User = require("./models/user.model");
@@ -38,6 +40,7 @@ const GetCallDataListing = require("./router/GetCallDataListing");
 const CardataPreview = require("./router/CardataPreview");
 const Cars = require("./router/Brand/Cars");
 const TransictionData = require("./controllers/TransictionData");
+const bidPage = require("./controllers/bidPage");
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -74,139 +77,19 @@ const isLoggedIn = (req, res, next) => {
 
 
 // User Router 
-app.use(userRouter);
-
-// app.use('/api/users', rateLimiter, async (req, res) => {
-//   try {
-//     const users = await User.find();
-//     res.json(users);
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-
+app.use(userRouter); 
 // call for get all users
 app.use(getAllUser);
 
-// // get userlist in admin
-// app.get("/getAllUser", async (req, res) => {
-//   try {
-//     const alluser = await User.find({});
-//     res.send({ status: "ok", data: alluser });
-//   } catch (error) {
-//     console.log(error);
-//   }
-// });
-
-
 app.use(profileData);
-// // INDIVIDUAL PROFILE DATA
-// app.get("/profile/:id", async (req, res) => {
-//   const userId = req.params.id;
-//   try {
-//     const userProfile = await User.findById(userId);
-//     if (!userProfile) {
-//       return res.status(404).json({ message: 'User not found' });
-//     }
-//     res.json(userProfile);
-//   } catch (error) {
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-
-
 // GET ALL ADMIN CAR DATA 
 app.use(CarDataFormAdmins);
-
-// app.use('/api/CarDataFormAdmins', async (req, res) => {
-//   try {
-//     const CarAllDataAdmins = await CarDataAdmin.find();
-//     res.json(CarAllDataAdmins);
-//   }
-//   catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-
 // GET ALL CLIENT CAR DATA 
 app.use(CarDataFormClient);
-
-
-// app.use('/api/CarDataFormClient', async (req, res) => {
-//   try {
-//     const CarAllDataClient = await SellmyCarData.find();
-//     res.json(CarAllDataClient);
-//   }
-//   catch (error) {
-//     console.error(error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-
 // as a register
 app.use(Register);
-
-// app.post("/register", async (req, res) => {
-//   const { email, password, name, mobile } = req.body;
-//   const encryptedPassword = await bcrypt.hash(password, 10);
-//   try {
-//     // console.log(email +" === "+ password);
-//     const oldUser = await User.findOne({ email });
-//     if (oldUser) {
-//       return res.send({ error: "User Already Exists!" });
-//     }
-//     const newUser = new User({
-//       email,
-//       password: encryptedPassword,
-//       name,
-//       mobile
-//     });
-//     await newUser.save();
-//     res.status(201).json(newUser);
-//   } catch (error) {
-//     res.status(500).json(error.message);
-//   }
-// });
-
 // Login in API 
 app.use(Login);
-
-// app.post("/login", async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-//     const user = await User.findOne({ email: email });
-//     // console.log(email+" "+password+" "+user);
-
-//     console.log("This is Status : " + res.status);
-//     if (!user) {
-//       return res.status(404).json({ status: "USER NOT FOUND!" });
-//     }
-//     if (await bcrypt.compare(password, user.password)) {
-//       const userInfo = {
-//         id: user._id, // Assuming the user's ID is stored in the _id field
-//         email: user.email,
-//       };
-//       // Create the JWT token with the payload
-//       const token = jwt.sign(userInfo, JWT_SECRET);
-//       return res.status(200).json({ status: "valid user", data: token, id: userInfo.id, email: userInfo.email });
-
-//       // const token = jwt.sign({ email: user.email }, JWT_SECRET);
-//       // return res.status(200).json({ status: "valid user", data: token });
-//     }
-//     else {
-//       return res.status(401).json({ status: "Error", error: "Invaild Password!" });
-//     }
-//   } catch (error) {
-//     res.status(500).json(error.message);
-//   }
-// });
-
 // for google singup import from auth 
 
 /// user DATA
@@ -226,177 +109,20 @@ app.post('/userData', async (req, res) => {
 // add the payment api
 app.use(TransictionData);
 
-
 // Configure multer for file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 // ADD A CAR FOR ADMIN PANELL
 
-app.use(addacar);
-// app.use(AddACar);
-// app.post('/api/addacar', async (req, res) => {
-//   const {
-//     name,
-//     model,
-//     year,
-//     color,
-//     bodytype,
-//     mileages,
-//     condition,
-//     vin,
-//     stocknumber,
-//     fueltype,
-//     gasmileages,
-//     fueltanksize,
-//     transmission,
-//     Engine,
-//     Horsepower,
-//     Doors,
-//     picture,
-//     gallery,
-//     Brand,
-//     price } = req.body;
-
-//   try {
-//     const CarDataforAdmin = new CarDataAdmin({
-//       name,
-//       model,
-//       year,
-//       color,
-//       bodytype,
-//       mileages,
-//       condition,
-//       vin,
-//       stocknumber,
-//       fueltype,
-//       gasmileages,
-//       fueltanksize,
-//       transmission,
-//       Engine,
-//       Horsepower,
-//       Doors,
-//       Brand,
-//       picture,
-//       gallery,
-//       price
-//     });
-//     await CarDataforAdmin.save();
-//     res.status(201).json(CarDataforAdmin);
-
-//   } catch (error) {
-//     console.error('Error adding car:', error);
-//     // Return a 400 Bad Request status with an error message
-//     res.status(400).json({
-//       message: 'Invalid JSON data in the request',
-//       error: error.message, // Include the error message in the response
-//     });
-//   }
-// });
-
-
+app.use(addacar);  
 // add car for every client
-
 app.use(SellMyCar);
-
-// app.post('/api/sellmycar', async (req, res) => {
-//   const {
-//     name,
-//     model,
-//     year,
-//     color,
-//     bodytype,
-//     mileages,
-//     condition,
-//     vin,
-//     stocknumber,
-//     fueltype,
-//     gasmileages,
-//     fueltanksize,
-//     transmission,
-//     Engine,
-//     Horsepower,
-//     Doors,
-//     picture,
-//     gallery,
-//     Brand,
-//     price } = req.body;
-
-//   try {
-//     const carData = new SellmyCarData({
-//       name,
-//       model,
-//       year,
-//       color,
-//       bodytype,
-//       mileages,
-//       condition,
-//       vin,
-//       stocknumber,
-//       fueltype,
-//       gasmileages,
-//       fueltanksize,
-//       transmission,
-//       Engine,
-//       Horsepower,
-//       Doors,
-//       picture,
-//       gallery,
-//       Brand,
-//       price
-//     });
-//     await carData.save();
-//     res.status(201).json(carData);
-
-//     // res.status(201).json({ message: 'Car added successfully' });
-//   } catch (error) {
-//     console.error('Error adding car:', error);
-//     // Return a 400 Bad Request status with an error message
-//     res.status(400).json({
-//       message: 'Invalid JSON data in the request',
-//       error: error.message, // Include the error message in the response
-//     });
-//   }
-// });
-
-
 // API for GET all data from carlisting 
-app.use(GetCallDataListing);
-
-// app.get("/api/getcalldatalisting", async (req, res) => {
-//   try{
-//       const GetAllCarData = await SellmyCarData.find({});
-//       res.send({ status : "OK" , data : GetAllCarData});
-//       console.log("ALL IS WELL");
-//       res.json(GetAllCarData);
-
-//   }catch (error) {
-//       console.log("This error comeing from GETCALLDATALISTING and it is :" + error);
-//   }
-// } );
-
-// for band car
+app.use(GetCallDataListing); 
 app.use(Cars);
-
 app.use(CardataPreview);
-
-// app.get('/api/getcalldatalisting/:carId', async (req, res) => {
-//   const carId = req.params.carId;
-//   try {
-//     const carProfile = await SellmyCarData.findById(carId);
-//     if (!carProfile) {
-//       return res.status(404).json({ error: 'Car not found' });
-//     }
-//     // Assuming carData is obtained or processed somehow
-//     const carData = {}; // Adjust this line based on how you get carData
-//     // Adjust the response format based on your needs
-//     res.json({ data: carData, carProfile });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// });
-
-// Coneected MongoDB
+app.use(bidPage);
+ 
 
 mongoose.connect(DBURL, {
   useNewUrlParser: true,
@@ -410,6 +136,8 @@ mongoose.connect(DBURL, {
     console.log("NOT DataBase CONNECTED " + error);
     process.exit(1);
   });
+
+
 
 // default message for server
 app.use('/', (req, res) => {

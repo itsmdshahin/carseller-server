@@ -46,6 +46,7 @@ const sendOTPEmail = (userEmail, otp) => {
 Register.post("/register", async (req, res) => {
   const { email, password, name, mobile } = req.body;
   const encryptedPassword = await bcrypt.hash(password, 10);
+  const otp = "0000";
   try {
     // console.log(email +" === "+ password);
     const oldUser = await User.findOne({ email });
@@ -56,7 +57,8 @@ Register.post("/register", async (req, res) => {
       email,
       password: encryptedPassword,
       name,
-      mobile
+      mobile,
+      otp
     });
     await newUser.save();
     res.status(201).json(newUser);

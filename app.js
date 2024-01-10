@@ -41,6 +41,7 @@ const CardataPreview = require("./router/CardataPreview");
 const Cars = require("./router/Brand/Cars");
 const TransictionData = require("./controllers/TransictionData");
 const bidPage = require("./controllers/bidPage");
+const payment = require("./router/payment");
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -55,7 +56,12 @@ const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors(
+  {
+    origin: 'http://127.0.0.1:5173',
+    credentials: true
+  }
+));
 // morgan for middleware
 app.use(morgan('dev')); 
 app.use(xssClean());  
@@ -122,6 +128,9 @@ app.use(GetCallDataListing);
 app.use(Cars);
 app.use(CardataPreview);
 app.use(bidPage);
+
+// adding payment apiendpoint
+app.use('/api', payment);
  
 
 mongoose.connect(DBURL, {

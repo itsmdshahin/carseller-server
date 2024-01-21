@@ -40,5 +40,19 @@ bidPage.get('/api/get-all-bids', async (req, res) => {
 }
 });
 
+// API endpoint to retrieve the highest bidder for a specific carId
+bidPage.get('/api/get-highest-bid/:carId', async (req, res) => {
+  try {
+    const carId = req.params.carId;
+    const highestBid = await BidSchemaModel
+      .findOne({ carId })
+      .sort({ bidAmount: -1 }) // Sort in descending order to get the highest bid first
 
+    res.json(highestBid);
+    console.log(`Successfully handled GET request for the highest bid of carId: ${carId}`);
+  } catch (error) {
+    console.error(`Error retrieving the highest bid for carId ${carId}:`, error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 module.exports = bidPage;

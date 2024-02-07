@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+
+const SellmyCarData = require('../../models/sellmycars.model'); 
 const SellmyCarSchema = require('../../models/sellmycars.model');
 const addaCarSchema = require('../../models/addacars.model'); 
   
@@ -48,5 +50,40 @@ router.delete('/api/car/:id', async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+// Ensure this path matches your file structure
+
+// Update car data
+router.put('/api/updatecar/:carId', async (req, res) => {
+    const { carId } = req.params;
+    const updateData = req.body; // This contains the data you want to update
+
+    try {
+        const updatedCar = await SellmyCarData.findByIdAndUpdate(carId, updateData, { new: true });
+        if (!updatedCar) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+        res.json({ message: 'Car updated successfully', updatedCar });
+    }  catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
+      }
+});
+
+// Delete car data
+router.delete('/api/deletecar/:carId', async (req, res) => {
+    const { carId } = req.params;
+
+    try {
+        const car = await SellmyCarData.findByIdAndRemove(carId);
+        if (!car) {
+            return res.status(404).json({ message: 'Car not found' });
+        }
+        res.json({ message: 'Car deleted successfully' });
+    } catch (error) {
+        console.error('Delete Car Error:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+  
 
 module.exports = router;

@@ -38,10 +38,12 @@ const addacar = require("./router/addacar");
 const GETCALLDATALISTING = require("./router/GetCallDataListing");
 const GetCallDataListing = require("./router/GetCallDataListing");
 const CardataPreview = require("./router/CardataPreview");
+const carRoutes = require("./router/carRoutes");
 const Cars = require("./router/Brand/Cars");
 const TransictionData = require("./controllers/TransictionData");
 const bidPage = require("./controllers/bidPage");
 const payment = require("./router/payment");
+const router = require("./router/CRUD/router");
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -82,6 +84,7 @@ const isLoggedIn = (req, res, next) => {
 }
 
 
+app.use(router);
 // User Router 
 app.use(userRouter); 
 // call for get all users

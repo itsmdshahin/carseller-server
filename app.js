@@ -134,7 +134,27 @@ app.use(bidPage);
 
 // adding payment apiendpoint
 app.use('/api', payment);
- 
+// car
+
+
+app.get('/vehicle-value', async (req, res) => {
+  const vin = req.query.vin;
+  const apiKey = 'u37rz3hcp_0s7baaji9_78ub2ujlx'; // Securely stored
+  const apiUrl = 'https://api.carsxe.com/marketvalue';
+
+  try {
+      const response = await axios.get(apiUrl, {
+          params: {
+              key: apiKey,
+              vin: vin,
+          },
+      });
+      res.json(response.data);
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+  }
+});
 
 mongoose.connect(DBURL, {
   useNewUrlParser: true,

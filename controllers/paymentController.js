@@ -40,7 +40,7 @@ class paymentController {
         const { paymentID, status } = req.query
 
         if (status === 'cancel' || status === 'failure') {
-            return res.redirect(`http://127.0.0.1:5173/error?message=${status}`)
+            return res.redirect(`http://localhost:5173/error?message=${status}`)
         }
         if (status === 'success') {
             try {
@@ -57,13 +57,13 @@ class paymentController {
                         amount: parseInt(data.amount)
                     })
 
-                    return res.redirect(`http://127.0.0.1:5173/success`)
+                    return res.redirect(`http://localhost:5173/success`)
                 }else{
-                    return res.redirect(`http://127.0.0.1:5173/error?message=${data.statusMessage}`)
+                    return res.redirect(`http://localhost:5173/error?message=${data.statusMessage}`)
                 }
             } catch (error) {
                 console.log(error)
-                return res.redirect(`http://127.0.0.1:5173/error?message=${error.message}`)
+                return res.redirect(`http://localhost:5173/error?message=${error.message}`)
             }
         }
     }

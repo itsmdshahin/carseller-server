@@ -55,4 +55,39 @@ bidPage.get('/api/get-highest-bid/:carId', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+bidPage.get('/api/get-all-bids', async (req, res) => {
+  const { bidderUserId } = req.query; // Get bidderUserId from query parameters
+
+  try {
+    let query = {};
+    if (bidderUserId) query.bidderUserId = bidderUserId; // Filter by bidderUserId if provided
+
+    const allBidList = await BidSchemaModel.find(query);
+    res.json(allBidList);
+  } catch (error) {
+    console.error('Error retrieving bids:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+bidPage.get('/api/get-top-bidders', async (req, res) => {
+  try {
+      const topBidders = await BidSchemaModel.aggregate([
+          {
+              $group: {
+                  _id: '$bidderUserId',
+                  totalAmount: { $sum: { $convert: { input: "$bidAmount", to: "decimal" } } }
+              }
+          },
+          { $sort: { totalAmount: -1 } },
+          { $limit: 5 }
+      ]);
+
+      res.json(topBidders);
+  } catch (error) {
+      console.error('Error retrieving top bidders:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 module.exports = bidPage;

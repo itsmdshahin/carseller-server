@@ -43,7 +43,9 @@ const Cars = require("./router/Brand/Cars");
 const TransictionData = require("./controllers/TransictionData");
 const bidPage = require("./controllers/bidPage");
 const payment = require("./router/payment");
-const router = require("./router/CRUD/router");
+const router = require("./router/CRUD/router"); 
+const eventRoutes = require('./router/eventRoutes'); // Update the path to your event routes file
+
 const JWT_SECRET = "jjkdjskdjkjdkdjkdjskdnsdsndskndj94949i4knfknfnie";
 
  
@@ -135,6 +137,8 @@ app.use(bidPage);
 // adding payment apiendpoint
 app.use('/api', payment);
 // car
+app.use('/api', eventRoutes);
+
 
 
 app.get('/vehicle-value', async (req, res) => {
